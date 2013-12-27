@@ -7,13 +7,24 @@
 //
 
 #import "AppDelegate.h"
+#import <Parse/Parse.h>
+#import "FenceMonitor.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    [Parse setApplicationId:@"oI0GWwLvJkuJqNoTGfU417M29PJIr9APmxLgpFMd"
+                  clientKey:@"6UiNwRDeZvnUJhPksQl501MUOU8f9Hyw1XAQO9ue"];
+    [FBSettings setDefaultAppID:@"200098166843586"];
+    [FBSettings setDefaultUrlSchemeSuffix:@"200098166843586"];
+    [PFFacebookUtils initializeFacebook];
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [PFFacebookUtils handleOpenURL:url];
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -40,7 +51,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [[FenceMonitor getMonitor] removeFences];
 }
 
 @end
